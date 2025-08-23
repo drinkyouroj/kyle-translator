@@ -1,0 +1,7 @@
+# Python files
+kyle_translator/__pycache__/*
+kyle_translator/providers/__pycache__/*
+*.pyc
+
+# Environment variables
+.env

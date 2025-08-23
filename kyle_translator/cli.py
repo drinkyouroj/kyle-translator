@@ -15,17 +15,17 @@ from .providers import make_providers
 app = typer.Typer(add_completion=False)
 
 
-@app.command()
-def run(
+def main(
     source: str = typer.Option("en", "--source", help="Source language code"),
     target: str = typer.Option("es", "--target", help="Target language code"),
     providers: List[str] = typer.Option(["mock"], "--providers", help="Providers to use"),
-    words: List[str] = typer.Option([], "--words", help="Words to translate"),
+    words: Optional[List[str]] = typer.Argument(None, help="Words to translate"),
     input_file: Optional[Path] = typer.Option(None, "--input-file", exists=True, file_okay=True, readable=True, help="File with one word per line"),
     output_json: Optional[Path] = typer.Option(None, "--output-json", help="Path to write JSON output"),
     output_csv: Optional[Path] = typer.Option(None, "--output-csv", help="Path to write CSV output"),
     back_translate: bool = typer.Option(False, "--back-translate", help="Enable back-translation scoring"),
 ):
+    """Translate words using multiple LLM providers and aggregate by confidence scores."""
     config = load_config()
     config.enable_back_translation = bool(back_translate)
     provs = make_providers(providers, config)
@@ -33,9 +33,13 @@ def run(
         print("[yellow]No providers available. Check API keys or provider names.[/yellow]")
         raise typer.Exit(code=1)
 
-    all_words: List[str] = list(words)
+    all_words: List[str] = list(words or [])
     if input_file:
         all_words += [w.strip() for w in input_file.read_text().splitlines() if w.strip()]
+
+    if not all_words:
+        print("[yellow]No words provided. Use positional arguments or --input-file.[/yellow]")
+        raise typer.Exit(code=1)
 
     master = run_translation(config, provs, all_words, source, target)
 
@@ -45,6 +49,7 @@ def run(
 
     if output_json:
         output_json.write_text(json.dumps(master.model_dump(), ensure_ascii=False, indent=2))
+        print(f"[green]JSON output written to {output_json}[/green]")
     if output_csv:
         rows = []
         for agg in master.words:
@@ -58,6 +63,11 @@ def run(
                 "score": agg.final_score,
             })
         pd.DataFrame(rows).to_csv(output_csv, index=False)
+        print(f"[green]CSV output written to {output_csv}[/green]")
+
+
+# Register the main function as the default command
+app.command()(main)
 
 
 if __name__ == "__main__":
