@@ -16,9 +16,9 @@ app = typer.Typer(add_completion=False)
 
 
 def main(
-    source: str = typer.Option("en", "--source", help="Source language code"),
-    target: str = typer.Option("es", "--target", help="Target language code"),
-    providers: List[str] = typer.Option(["mock"], "--providers", help="Providers to use"),
+    source: str = typer.Option(None, "--source", help="Source language code"),
+    target: str = typer.Option(None, "--target", help="Target language code"),
+    providers: Optional[str] = typer.Option(None, "--providers", help="Providers to use (comma-separated)"),
     words: Optional[List[str]] = typer.Argument(None, help="Words to translate"),
     input_file: Optional[Path] = typer.Option(None, "--input-file", exists=True, file_okay=True, readable=True, help="File with one word per line"),
     output_json: Optional[Path] = typer.Option(None, "--output-json", help="Path to write JSON output"),
@@ -28,10 +28,29 @@ def main(
     """Translate words using multiple LLM providers and aggregate by confidence scores."""
     config = load_config()
     config.enable_back_translation = bool(back_translate)
-    provs = make_providers(providers, config)
+    
+    # Load source and target from .env if not specified
+    if source is None:
+        source = config.source_lang if hasattr(config, 'source_lang') else "en"
+    if target is None:
+        target = config.target_lang if hasattr(config, 'target_lang') else "es"
+    
+    # Parse providers from comma-separated string or use default
+    if providers is None:
+        providers_list = ["mock"]
+    else:
+        providers_list = [p.strip() for p in providers.split(",") if p.strip()]
+    
+    # Debug: show what providers were requested
+    print(f"[blue]Requested providers: {providers_list}[/blue]")
+    print(f"[blue]Source: {source}, Target: {target}[/blue]")
+    
+    provs = make_providers(providers_list, config)
     if not provs:
         print("[yellow]No providers available. Check API keys or provider names.[/yellow]")
         raise typer.Exit(code=1)
+    
+    print(f"[blue]Available providers: {[p.name for p in provs]}[/blue]")
 
     all_words: List[str] = list(words or [])
     if input_file:

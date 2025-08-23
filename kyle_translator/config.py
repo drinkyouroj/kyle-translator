@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 
 class ProviderConfig(BaseModel):
     openai_api_key: Optional[str] = Field(default=None)
-    openai_model: str = Field(default_factory=lambda: os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
+    openai_model: str = Field(default="gpt-4o-mini")
     anthropic_api_key: Optional[str] = Field(default=None)
-    anthropic_model: str = Field(default_factory=lambda: os.getenv("ANTHROPIC_MODEL", "claude-3-5-sonnet-20240620"))
+    anthropic_model: str = Field(default="claude-3-5-sonnet-20240620")
 
 
 class WeightConfig(BaseModel):
@@ -38,17 +38,23 @@ class WeightConfig(BaseModel):
 class AppConfig(BaseModel):
     provider: ProviderConfig
     weights: WeightConfig
+    source_lang: str = "en"
+    target_lang: str = "es"
     enable_back_translation: bool = False
     max_workers: int = 8
     timeout_seconds: int = 60
 
 
 def load_config() -> AppConfig:
-    load_dotenv(override=False)
-
+    # Load .env file first
+    load_dotenv(override=True)
+    
+    # Now get values from environment
     provider = ProviderConfig(
         openai_api_key=os.getenv("OPENAI_API_KEY"),
+        openai_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
+        anthropic_model=os.getenv("ANTHROPIC_MODEL", "claude-3-5-sonnet-20240620"),
     )
 
     weights = WeightConfig(
@@ -57,6 +63,8 @@ def load_config() -> AppConfig:
         weight_back_translation=float(os.getenv("WEIGHT_BACK_TRANSLATION", "0.1")),
     ).normalized()
 
+    source_lang = os.getenv("SOURCE_LANG", "en")
+    target_lang = os.getenv("TARGET_LANG", "es")
     enable_back_translation = os.getenv("ENABLE_BACK_TRANSLATION", "false").lower() in {"1", "true", "yes", "on"}
     max_workers = int(os.getenv("MAX_WORKERS", "8"))
     timeout_seconds = int(os.getenv("TIMEOUT_SECONDS", "60"))
@@ -64,6 +72,8 @@ def load_config() -> AppConfig:
     return AppConfig(
         provider=provider,
         weights=weights,
+        source_lang=source_lang,
+        target_lang=target_lang,
         enable_back_translation=enable_back_translation,
         max_workers=max_workers,
         timeout_seconds=timeout_seconds,
