@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: kyle-translator
+Version: 0.1.0
+Summary: Translation confidence aggregator using multiple LLM providers
+Author: Kyle
+Requires-Python: >=3.10

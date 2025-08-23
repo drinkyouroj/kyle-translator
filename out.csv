@@ -1,0 +1,6 @@
+word,source_lang,target_lang,translation,gloss,provider,score
+hello,en,es,hola,,mock,0.45
+world,en,es,mundo,,mock,0.45
+apple,en,es,apple-es,,mock,0.25
+bank,en,es,bank-es,,mock,0.25
+light,en,es,light-es,,mock,0.25

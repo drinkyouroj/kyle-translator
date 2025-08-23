@@ -1,0 +1,159 @@
+{
+  "words": [
+    {
+      "word": "hello",
+      "source_lang": "en",
+      "target_lang": "es",
+      "results": [
+        {
+          "provider": "mock",
+          "text": "hello",
+          "source_lang": "en",
+          "target_lang": "es",
+          "candidate": {
+            "translation": "hola",
+            "gloss": null,
+            "self_confidence": 0.9
+          },
+          "error": null,
+          "latency_ms": null,
+          "back_translation": null
+        }
+      ],
+      "agreement_scores": {
+        "mock": 0.0
+      },
+      "back_translation_scores": {
+        "mock": 0.0
+      },
+      "final_choice_provider": "mock",
+      "final_translation": "hola",
+      "final_gloss": null,
+      "final_score": 0.45
+    },
+    {
+      "word": "world",
+      "source_lang": "en",
+      "target_lang": "es",
+      "results": [
+        {
+          "provider": "mock",
+          "text": "world",
+          "source_lang": "en",
+          "target_lang": "es",
+          "candidate": {
+            "translation": "mundo",
+            "gloss": null,
+            "self_confidence": 0.9
+          },
+          "error": null,
+          "latency_ms": null,
+          "back_translation": null
+        }
+      ],
+      "agreement_scores": {
+        "mock": 0.0
+      },
+      "back_translation_scores": {
+        "mock": 0.0
+      },
+      "final_choice_provider": "mock",
+      "final_translation": "mundo",
+      "final_gloss": null,
+      "final_score": 0.45
+    },
+    {
+      "word": "apple",
+      "source_lang": "en",
+      "target_lang": "es",
+      "results": [
+        {
+          "provider": "mock",
+          "text": "apple",
+          "source_lang": "en",
+          "target_lang": "es",
+          "candidate": {
+            "translation": "apple-es",
+            "gloss": null,
+            "self_confidence": 0.5
+          },
+          "error": null,
+          "latency_ms": null,
+          "back_translation": null
+        }
+      ],
+      "agreement_scores": {
+        "mock": 0.0
+      },
+      "back_translation_scores": {
+        "mock": 0.0
+      },
+      "final_choice_provider": "mock",
+      "final_translation": "apple-es",
+      "final_gloss": null,
+      "final_score": 0.25
+    },
+    {
+      "word": "bank",
+      "source_lang": "en",
+      "target_lang": "es",
+      "results": [
+        {
+          "provider": "mock",
+          "text": "bank",
+          "source_lang": "en",
+          "target_lang": "es",
+          "candidate": {
+            "translation": "bank-es",
+            "gloss": null,
+            "self_confidence": 0.5
+          },
+          "error": null,
+          "latency_ms": null,
+          "back_translation": null
+        }
+      ],
+      "agreement_scores": {
+        "mock": 0.0
+      },
+      "back_translation_scores": {
+        "mock": 0.0
+      },
+      "final_choice_provider": "mock",
+      "final_translation": "bank-es",
+      "final_gloss": null,
+      "final_score": 0.25
+    },
+    {
+      "word": "light",
+      "source_lang": "en",
+      "target_lang": "es",
+      "results": [
+        {
+          "provider": "mock",
+          "text": "light",
+          "source_lang": "en",
+          "target_lang": "es",
+          "candidate": {
+            "translation": "light-es",
+            "gloss": null,
+            "self_confidence": 0.5
+          },
+          "error": null,
+          "latency_ms": null,
+          "back_translation": null
+        }
+      ],
+      "agreement_scores": {
+        "mock": 0.0
+      },
+      "back_translation_scores": {
+        "mock": 0.0
+      },
+      "final_choice_provider": "mock",
+      "final_translation": "light-es",
+      "final_gloss": null,
+      "final_score": 0.25
+    }
+  ]
+}
